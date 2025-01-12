@@ -165,3 +165,9 @@ FROM Donkey;
 
 
 
+
+commands VARCHAR(255)
+commands
+
+
+
