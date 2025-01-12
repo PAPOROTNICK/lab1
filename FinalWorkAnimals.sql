@@ -186,3 +186,83 @@ insert into Donkey (name,type,birth_date) values
 ('dina','Donkey','2024-04-22'),
 ('clark','Donkey','2020-04-16'),
 ('bobi','Donkey','2018-05-28');
+
+
+
+
+
+DELETE FROM Camel;
+
+-- Создание таблицы, объединяющей данные о лошадях и ослах
+CREATE TABLE HorsesAndDonkeys AS
+SELECT id, name, type, birth_date
+FROM Horse
+UNION ALL
+SELECT id, name, type, birth_date
+FROM Donkey;
+
+
+-- Создание таблицы "молодые животные"
+CREATE TABLE YoungAnimals AS
+SELECT 
+    id,
+    name,
+    type,
+    birth_date,
+    TIMESTAMPDIFF(MONTH, birth_date, CURDATE()) AS age_in_months
+FROM (
+    SELECT id, name, type, birth_date FROM Cat
+    UNION ALL
+    SELECT id, name, type, birth_date FROM Dog
+    UNION ALL
+    SELECT id, name, type, birth_date FROM Hamster
+    UNION ALL
+    SELECT id, name, type, birth_date FROM Horse
+    UNION ALL
+    SELECT id, name, type, birth_date FROM Donkey
+) AS AllAnimals
+WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) >= 1
+  AND TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 3;
+
+
+-- Создание итоговой таблицы "Все животные"
+CREATE TABLE FinalAnimals AS
+SELECT 
+    id,
+    name,
+    type,
+    birth_date,
+    'Cat' AS origin_table
+FROM Cat
+UNION ALL
+SELECT 
+    id,
+    name,
+    type,
+    birth_date,
+    'Dog' AS origin_table
+FROM Dog
+UNION ALL
+SELECT 
+    id,
+    name,
+    type,
+    birth_date,
+    'Hamster' AS origin_table
+FROM Hamster
+UNION ALL
+SELECT 
+    id,
+    name,
+    type,
+    birth_date,
+    'Horse' AS origin_table
+FROM Horse
+UNION ALL
+SELECT 
+    id,
+    name,
+    type,
+    birth_date,
+    'Donkey' AS origin_table
+FROM Donkey;
